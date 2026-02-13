@@ -51,12 +51,17 @@ export default function InventoryManagement() {
   const getImageUrl = (imagePath) => {
     if (!imagePath) return "https://via.placeholder.com/40";
 
+    // If it's a relative path (new backend logic)
+    if (imagePath.startsWith("uploads/") || imagePath.startsWith("uploads\\")) {
+      return `https://grocery-app-backend-0mdx.onrender.com/${imagePath.replace(/\\/g, "/")}`;
+    }
+
     // If it's an external URL (not localhost), return as is
     if (imagePath.startsWith("http") && !imagePath.includes("localhost")) {
       return imagePath;
     }
 
-    // Extract filename and use Render URL
+    // Fallback for localhost URLs or bare filenames: extract filename and use Render URL
     const filename = imagePath.split(/[/\\]/).pop();
     return `https://grocery-app-backend-0mdx.onrender.com/uploads/${filename}`;
   };
