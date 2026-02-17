@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 
 import { Add, Edit, Delete } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts, deleteProduct, updateProduct } from "../Store/ProductSlice";
@@ -28,7 +28,17 @@ export default function ProductManagement() {
 
   const { products, loading } = useSelector((state) => state.products);
 
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchParams] = useSearchParams();
+  const [searchTerm, setSearchTerm] = useState(searchParams.get("search") || "");
+
+  useEffect(() => {
+    const query = searchParams.get("search");
+    if (query) {
+      setSearchTerm(query);
+    } else {
+      setSearchTerm("");
+    }
+  }, [searchParams]);
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
 

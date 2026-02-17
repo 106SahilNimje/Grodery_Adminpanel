@@ -53,7 +53,18 @@ export default function OrdersManagement() {
   const [selectedOrder, setSelectedOrder] = useState(null);
 
 
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(searchParams.get("search") || "");
+
+  useEffect(() => {
+    const query = searchParams.get("search");
+    // Only update if query exists, to avoid clearing state if user is typing elsewhere (though URL sync implies single source of truth usually)
+    // Actually better to fully sync:
+    if (query !== null) {
+      setSearchTerm(query);
+    } else {
+      setSearchTerm("");
+    }
+  }, [searchParams]);
   const [statusFilter, setStatusFilter] = useState("all");
   const [dateFilter, setDateFilter] = useState("");
 
@@ -290,20 +301,20 @@ export default function OrdersManagement() {
         <DialogContent dividers>
           {selectedOrder && (
             <Grid container spacing={3}>
-              <Grid item xs={12} md={6}>
+              <Grid size={{ xs: 12, md: 6 }}>
                 <Typography variant="subtitle2" gutterBottom>Customer Information</Typography>
                 <Typography variant="body2"><strong>Name:</strong> {selectedOrder.user?.name || selectedOrder.customer?.name}</Typography>
                 <Typography variant="body2"><strong>Phone:</strong> {selectedOrder.user?.phone || selectedOrder.customer?.phone}</Typography>
                 <Typography variant="body2"><strong>Address:</strong> {selectedOrder.user?.address || selectedOrder.customer?.address}</Typography>
               </Grid>
-              <Grid item xs={12} md={6}>
+              <Grid size={{ xs: 12, md: 6 }}>
                 <Typography variant="subtitle2" gutterBottom>Order Information</Typography>
                 <Typography variant="body2"><strong>Date:</strong> {new Date(selectedOrder.createdAt).toLocaleString()}</Typography>
                 <Typography variant="body2"><strong>Status:</strong> {selectedOrder.orderStatus}</Typography>
                 <Typography variant="body2"><strong>Total Amount:</strong> ₹{selectedOrder.totalAmount}</Typography>
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <Divider sx={{ my: 2 }} />
                 <Typography variant="subtitle2" gutterBottom>Order Items</Typography>
                 <Table size="small">

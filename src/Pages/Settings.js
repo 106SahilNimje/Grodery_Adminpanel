@@ -24,7 +24,7 @@ import { useNavigate } from "react-router-dom";
 export default function Settings() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { admin, loading, error } = useSelector((state) => state.auth);
+  const { admin, loading } = useSelector((state) => state.auth);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -67,7 +67,7 @@ export default function Settings() {
 
   return (
     <Box sx={{ maxWidth: 1200, mx: "auto", p: 3 }}>
-   
+
       <Box mb={4}>
         <Typography fontSize={26} fontWeight={700}>
           Settings
@@ -84,7 +84,7 @@ export default function Settings() {
       )}
 
       <Grid container spacing={4}>
-        <Grid item xs={12} lg={8}width={560}>
+        <Grid item xs={12} lg={8} width={560}>
           <Stack spacing={4}>
             <Paper sx={card}>
               <Typography sx={cardTitle}>Business Profile</Typography>
@@ -129,39 +129,39 @@ export default function Settings() {
               <Stack spacing={3}>
                 <Box>
                   <Label>Full Name</Label>
-                  <Input 
-                    name="name" 
-                    value={formData.name} 
-                    onChange={handleChange} 
+                  <Input
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
                   />
                 </Box>
 
                 <Box>
                   <Label>Email Address</Label>
-                  <Input 
-                    name="email" 
-                    value={formData.email} 
-                    onChange={handleChange} 
+                  <Input
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
                   />
                 </Box>
 
                 <Box>
                   <Label>Current Password (Required to set new password)</Label>
-                  <Input 
-                    name="password" 
-                    type="password" 
-                    value={formData.password} 
-                    onChange={handleChange} 
+                  <Input
+                    name="password"
+                    type="password"
+                    value={formData.password}
+                    onChange={handleChange}
                   />
                 </Box>
 
                 <Box>
                   <Label>New Password</Label>
-                  <Input 
-                    name="newPassword" 
-                    type="password" 
-                    value={formData.newPassword} 
-                    onChange={handleChange} 
+                  <Input
+                    name="newPassword"
+                    type="password"
+                    value={formData.newPassword}
+                    onChange={handleChange}
                   />
                 </Box>
               </Stack>

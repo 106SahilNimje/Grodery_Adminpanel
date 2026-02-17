@@ -7,7 +7,9 @@ import {
   ListItemText,
   ListItemIcon,
   List,
-  ListItem
+  ListItem,
+  TextField,
+  InputAdornment
 } from "@mui/material";
 
 import {
@@ -41,6 +43,33 @@ export default function Topbar({ onMenuClick }) {
   // Notifications State
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
+  // Search State
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Determine search context based on current page
+  const getSearchContext = () => {
+    if (location.pathname === "/inventory") {
+      return { path: "/inventory", placeholder: "Search Inventory..." };
+    }
+    if (location.pathname === "/orders") {
+      return { path: "/orders", placeholder: "Search Orders..." };
+    }
+    // Default to products for any other page where search is visible
+    return { path: "/products", placeholder: "Search Products..." };
+  };
+
+  const { path, placeholder } = getSearchContext();
+
+  const handleSearchSubmit = (e) => {
+    if (e.key === 'Enter' && searchQuery.trim()) {
+      navigate(`${path}?search=${encodeURIComponent(searchQuery.trim())}`);
+      // Optional: keep search open or close it. Closing it for now to show results clean.
+      // setIsSearchOpen(false); 
+      // setSearchQuery("");
+    }
+  };
 
   const { orders } = useSelector((state) => state.orders);
   const { products } = useSelector((state) => state.products);
@@ -243,9 +272,33 @@ export default function Topbar({ onMenuClick }) {
           </Box>
         </Menu>
 
-        <IconButton sx={{ color: "#4b5563" }}>
-          <Search />
-        </IconButton>
+        {!["/", "/categories", "/analytics", "/settings"].includes(location.pathname) && (
+          isSearchOpen ? (
+            <TextField
+              autoFocus
+              size="small"
+              placeholder={placeholder}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={handleSearchSubmit}
+              onBlur={() => {
+                if (!searchQuery) setIsSearchOpen(false);
+              }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Search sx={{ color: "text.secondary", fontSize: 20 }} />
+                  </InputAdornment>
+                ),
+              }}
+              sx={{ width: 250 }}
+            />
+          ) : (
+            <IconButton sx={{ color: "#4b5563" }} onClick={() => setIsSearchOpen(true)}>
+              <Search />
+            </IconButton>
+          )
+        )}
       </Box>
     </Box>
   );

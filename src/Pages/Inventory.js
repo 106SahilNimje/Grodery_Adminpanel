@@ -29,12 +29,13 @@ import {
 } from "@mui/icons-material";
 
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts, addStockEntry } from "../Store/ProductSlice";
 
 export default function InventoryManagement() {
   const dispatch = useDispatch();
-  const { products, loading } = useSelector((state) => state.products);
+  const { products } = useSelector((state) => state.products);
 
   const [open, setOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -80,7 +81,17 @@ export default function InventoryManagement() {
     }))
   );
 
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchParams] = useSearchParams();
+  const [searchTerm, setSearchTerm] = useState(searchParams.get("search") || "");
+
+  useEffect(() => {
+    const query = searchParams.get("search");
+    if (query) {
+      setSearchTerm(query);
+    } else {
+      setSearchTerm("");
+    }
+  }, [searchParams]);
   const [categoryFilter, setCategoryFilter] = useState("all");
 
   const categories = [...new Set(inventoryItems.map(item => item.category))];
@@ -199,7 +210,7 @@ export default function InventoryManagement() {
 
       <Grid container spacing={3} mb={4}>
         {stats.map((stat, index) => (
-          <Grid item xs={12} md={4} key={index}>
+          <Grid size={{ xs: 12, md: 4 }} key={index}>
             <Paper
               sx={{
                 p: 3,

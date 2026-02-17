@@ -143,7 +143,7 @@ export default function Dashboard() {
       </Grid>
 
       <Grid container spacing={4} mb={3}>
-        <Grid item xs={12} lg={6}>
+        <Grid size={{ xs: 12, lg: 6 }}>
           <Card sx={cardStyle}>
             <Box sx={cardHeader}>
               <Typography fontWeight={700}>Sales Overview</Typography>
@@ -186,7 +186,7 @@ export default function Dashboard() {
           </Card>
         </Grid>
 
-        <Grid item xs={12} lg={6}>
+        <Grid size={{ xs: 12, lg: 6 }}>
           <Card sx={cardStyle}>
             <Typography fontWeight={700} mb={2}>
               Category Distribution
@@ -281,7 +281,7 @@ export default function Dashboard() {
 
 function StatCard({ icon, bg, color, label, value, badge, badgeColor }) {
   return (
-    <Grid item xs={12} md={6} lg={3}>
+    <Grid size={{ xs: 12, md: 6, lg: 3 }}>
       <Card sx={cardStyle}>
         <Box sx={{
           display: "flex", justifyContent: "space-between", mb: 2, width: 148,

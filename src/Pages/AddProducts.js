@@ -47,7 +47,7 @@ export default function AddProduct() {
     if (!products || products.length === 0) {
       dispatch(fetchProducts());
     }
-  }, [dispatch]);
+  }, [dispatch, products]);
 
   const subCategories = categories.find((c) => c._id === categoryId)?.subCategories || [];
 
@@ -62,7 +62,7 @@ export default function AddProduct() {
         setDescription(product.description || "");
         setIsActive(product.isActive !== false);
         setVariants(product.variants || []);
-        setImages([]); 
+        setImages([]);
       }
     }
   }, [id, products]);
@@ -137,15 +137,15 @@ export default function AddProduct() {
 
       <Paper sx={{ p: 4, borderRadius: 3 }}>
         <Box display="grid" gridTemplateColumns={{ md: "1fr 1fr" }} gap={3}>
-          <TextField 
-            label="Product Name *" 
-            value={name} 
-            onChange={(e) => setName(e.target.value)} 
+          <TextField
+            label="Product Name *"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
-          <TextField 
-            label="SKU *" 
-            value={sku} 
-            onChange={(e) => setSku(e.target.value)} 
+          <TextField
+            label="SKU *"
+            value={sku}
+            onChange={(e) => setSku(e.target.value)}
           />
 
           <FormControl fullWidth>
@@ -216,27 +216,27 @@ export default function AddProduct() {
         <Box mt={4}>
           <Typography fontWeight={600} mb={2}>Product Variants *</Typography>
           <Box display="grid" gridTemplateColumns={{ md: "1fr 1fr 1fr auto" }} gap={2} alignItems="center">
-            <TextField 
-              label="Unit (e.g. 1kg)" 
-              value={vUnit} 
-              onChange={(e) => setVUnit(e.target.value)} 
+            <TextField
+              label="Unit (e.g. 1kg)"
+              value={vUnit}
+              onChange={(e) => setVUnit(e.target.value)}
             />
-            <TextField 
-              label="Price" 
-              type="number" 
-              InputProps={{ startAdornment: "₹" }} 
-              value={vPrice} 
-              onChange={(e) => setVPrice(e.target.value)} 
+            <TextField
+              label="Price"
+              type="number"
+              InputProps={{ startAdornment: "₹" }}
+              value={vPrice}
+              onChange={(e) => setVPrice(e.target.value)}
             />
-            <TextField 
-              label="Stock" 
-              type="number" 
-              value={vStock} 
-              onChange={(e) => setVStock(e.target.value)} 
+            <TextField
+              label="Stock"
+              type="number"
+              value={vStock}
+              onChange={(e) => setVStock(e.target.value)}
             />
-            <Button 
-              variant="contained" 
-              startIcon={<Add />} 
+            <Button
+              variant="contained"
+              startIcon={<Add />}
               sx={{ bgcolor: "#16A34A", height: "56px" }}
               onClick={addVariant}
             >
@@ -277,10 +277,10 @@ export default function AddProduct() {
         />
 
         <Box display="flex" alignItems="center" gap={2} mt={3}>
-          <Switch 
-            checked={isActive} 
-            onChange={(e) => setIsActive(e.target.checked)} 
-            color="success" 
+          <Switch
+            checked={isActive}
+            onChange={(e) => setIsActive(e.target.checked)}
+            color="success"
           />
           <Typography fontWeight={600}>Active Product</Typography>
         </Box>
@@ -295,14 +295,14 @@ export default function AddProduct() {
             Save Product
           </Button>
 
-          <Button 
-            variant="outlined" 
-            size="large" 
+          <Button
+            variant="outlined"
+            size="large"
             onClick={() => navigate("/products")}
-            sx={{ 
-              color: "#16A34A", 
+            sx={{
+              color: "#16A34A",
               borderColor: "#16A34A",
-              "&:hover": { borderColor: "#15803D", bgcolor: "rgba(22, 163, 74, 0.04)" } 
+              "&:hover": { borderColor: "#15803D", bgcolor: "rgba(22, 163, 74, 0.04)" }
             }}
           >
             Cancel
