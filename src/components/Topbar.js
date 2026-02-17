@@ -4,10 +4,8 @@ import {
   IconButton,
   Badge,
   Menu,
-  MenuItem,
   ListItemText,
   ListItemIcon,
-  Divider,
   List,
   ListItem
 } from "@mui/material";
@@ -58,13 +56,13 @@ export default function Topbar({ onMenuClick }) {
   const notifications = useMemo(() => {
     const list = [];
 
-    const pendingOrders = orders.filter((o) => o.status === "Pending");
+    const pendingOrders = orders.filter((o) => o.orderStatus === "Pending");
     pendingOrders.forEach((o) => {
       list.push({
         id: o._id,
         type: "order",
         message: `New Order #${o._id.slice(-6).toUpperCase()}`,
-        subtext: `₹${o.totalAmount} • ${o.customer.name}`,
+        subtext: `₹${o.totalAmount} • ${o.user?.name || o.customer?.name || "Guest"}`,
         time: new Date(o.createdAt),
         link: "/orders"
       });
@@ -78,7 +76,7 @@ export default function Topbar({ onMenuClick }) {
             type: "out_stock",
             message: `Out of Stock: ${p.name}`,
             subtext: `Variant: ${v.unit}`,
-            time: new Date(), 
+            time: new Date(),
             link: "/inventory"
           });
         } else if (v.stock <= 10) {
@@ -94,11 +92,11 @@ export default function Topbar({ onMenuClick }) {
       });
     });
 
-   
+
     return list.sort((a, b) => {
-       if (a.type === "order" && b.type !== "order") return -1;
-       if (a.type === "out_stock" && b.type === "low_stock") return -1;
-       return 0;
+      if (a.type === "order" && b.type !== "order") return -1;
+      if (a.type === "out_stock" && b.type === "low_stock") return -1;
+      return 0;
     }).slice(0, 10);
   }, [orders, products]);
 
@@ -168,7 +166,7 @@ export default function Topbar({ onMenuClick }) {
           </Badge>
         </IconButton>
 
-       
+
         <Menu
           anchorEl={anchorEl}
           open={open}
@@ -190,13 +188,13 @@ export default function Topbar({ onMenuClick }) {
               Notifications
             </Typography>
           </Box>
-          
+
           <List sx={{ p: 0 }}>
             {notifications.length === 0 ? (
               <ListItem>
-                <ListItemText 
-                  primary="No new notifications" 
-                  secondary="You're all caught up!" 
+                <ListItemText
+                  primary="No new notifications"
+                  secondary="You're all caught up!"
                   sx={{ textAlign: "center", py: 2 }}
                 />
               </ListItem>
@@ -232,11 +230,11 @@ export default function Topbar({ onMenuClick }) {
               ))
             )}
           </List>
-          
+
           <Box p={1.5} borderTop="1px solid #f3f4f6" textAlign="center">
-            <Typography 
-              fontSize={12} 
-              color="primary" 
+            <Typography
+              fontSize={12}
+              color="primary"
               sx={{ cursor: "pointer", fontWeight: 600 }}
               onClick={handleClose}
             >

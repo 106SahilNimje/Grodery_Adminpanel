@@ -43,11 +43,11 @@ const getStatusColor = (status) => {
     case "delivered":
       return { bg: "#DCFCE7", text: "#16A34A" };
     case "shipped":
-      return { bg: "#EDE9FE", text: "#7C3AED" }; 
+      return { bg: "#EDE9FE", text: "#7C3AED" };
     case "processing":
       return { bg: "#DBEAFE", text: "#2563EB" };
     case "confirmed":
-        return { bg: "#E0F2FE", text: "#0284C7" }; 
+      return { bg: "#E0F2FE", text: "#0284C7" };
     case "pending":
       return { bg: "#FEF9C3", text: "#CA8A04" };
     case "cancelled":
@@ -97,7 +97,7 @@ export default function Dashboard() {
     if (!categoryPerformance || categoryPerformance.length === 0) return [];
     return categoryPerformance.map(item => ({
       name: item._id,
-      value: item.totalSales 
+      value: item.totalSales
     }));
   }, [categoryPerformance]);
 
@@ -147,13 +147,13 @@ export default function Dashboard() {
           <Card sx={cardStyle}>
             <Box sx={cardHeader}>
               <Typography fontWeight={700}>Sales Overview</Typography>
-              <Button 
-                size="small" 
-                variant="outlined" 
-                sx={{ 
-                  color: "#16A34A", 
+              <Button
+                size="small"
+                variant="outlined"
+                sx={{
+                  color: "#16A34A",
                   borderColor: "#16A34A",
-                  "&:hover": { borderColor: "#15803D", bgcolor: "rgba(22, 163, 74, 0.04)" } 
+                  "&:hover": { borderColor: "#15803D", bgcolor: "rgba(22, 163, 74, 0.04)" }
                 }}
               >
                 Last 7 Days
@@ -237,7 +237,7 @@ export default function Dashboard() {
 
           <TableBody>
             {recentOrders.map((o) => {
-              const { bg, text } = getStatusColor(o.status);
+              const { bg, text } = getStatusColor(o.orderStatus);
               return (
                 <TableRow hover key={o._id}>
                   <TableCell fontWeight={600}>#{o._id.slice(-6).toUpperCase()}</TableCell>
@@ -246,7 +246,7 @@ export default function Dashboard() {
                   <TableCell fontWeight={600}>₹{o.totalAmount}</TableCell>
                   <TableCell>
                     <Chip
-                      label={o.status}
+                      label={o.orderStatus}
                       size="small"
                       sx={{
                         bgcolor: bg,
@@ -256,8 +256,8 @@ export default function Dashboard() {
                     />
                   </TableCell>
                   <TableCell>
-                    <Button 
-                      size="small" 
+                    <Button
+                      size="small"
                       sx={{ color: "#16a34a" }}
                       onClick={() => navigate(`/orders?id=${o._id}`)}
                     >

@@ -80,7 +80,7 @@ export default function OrdersManagement() {
         (order.user?.email || order.customer?.phone || "").toLowerCase().includes(searchTerm.toLowerCase());
 
       const matchesStatus =
-        statusFilter === "all" || order.status.toLowerCase() === statusFilter.toLowerCase();
+        statusFilter === "all" || order.orderStatus.toLowerCase() === statusFilter.toLowerCase();
 
       const matchesDate =
         !dateFilter ||
@@ -97,12 +97,17 @@ export default function OrdersManagement() {
   const getImageUrl = (imagePath) => {
     if (!imagePath) return "https://via.placeholder.com/40";
 
+    // If it's a relative path (new backend logic)
+    if (imagePath.startsWith("uploads/") || imagePath.startsWith("uploads\\")) {
+      return `https://grocery-app-backend-0mdx.onrender.com/${imagePath.replace(/\\/g, "/")}`;
+    }
+
     // If it's an external URL (not localhost), return as is
     if (imagePath.startsWith("http") && !imagePath.includes("localhost")) {
       return imagePath;
     }
 
-    // Extract filename and use Render URL
+    // Fallback for localhost URLs or bare filenames: extract filename and use Render URL
     const filename = imagePath.split(/[/\\]/).pop();
     return `https://grocery-app-backend-0mdx.onrender.com/uploads/${filename}`;
   };
@@ -193,7 +198,7 @@ export default function OrdersManagement() {
               </TableRow>
             ) : filteredOrders.length > 0 ? (
               filteredOrders.map((o) => {
-                const { bg, text } = getStatusColor(o.status);
+                const { bg, text } = getStatusColor(o.orderStatus);
                 return (
                   <TableRow key={o._id} hover>
                     <TableCell sx={{ fontWeight: 600 }}>
@@ -217,7 +222,7 @@ export default function OrdersManagement() {
                     <TableCell>
                       <Select
                         size="small"
-                        value={o.status}
+                        value={o.orderStatus}
                         onChange={(e) => handleStatusChange(o._id, e.target.value)}
                         sx={{
                           bgcolor: bg,
@@ -294,7 +299,7 @@ export default function OrdersManagement() {
               <Grid item xs={12} md={6}>
                 <Typography variant="subtitle2" gutterBottom>Order Information</Typography>
                 <Typography variant="body2"><strong>Date:</strong> {new Date(selectedOrder.createdAt).toLocaleString()}</Typography>
-                <Typography variant="body2"><strong>Status:</strong> {selectedOrder.status}</Typography>
+                <Typography variant="body2"><strong>Status:</strong> {selectedOrder.orderStatus}</Typography>
                 <Typography variant="body2"><strong>Total Amount:</strong> ₹{selectedOrder.totalAmount}</Typography>
               </Grid>
 
