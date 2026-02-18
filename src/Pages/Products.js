@@ -129,18 +129,19 @@ export default function ProductManagement() {
       </Box>
 
       <Paper sx={{ borderRadius: 3, border: "1px solid #eee" }}>
-        <Box p={3} display="flex" gap={2}>
+        <Box p={3} display="flex" gap={2} flexWrap="wrap">
           <TextField
             size="small"
             placeholder="Search products..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            sx={{ width: { xs: "100%", sm: "auto" }, flexGrow: 1 }}
           />
           <Select
             size="small"
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
-            sx={{ minWidth: 150 }}
+            sx={{ minWidth: 150, width: { xs: "100%", sm: "auto" } }}
           >
             <MenuItem value="all">All Categories</MenuItem>
             {categories.map(c => (
@@ -151,7 +152,7 @@ export default function ProductManagement() {
             size="small"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            sx={{ minWidth: 120 }}
+            sx={{ minWidth: 120, width: { xs: "100%", sm: "auto" } }}
           >
             <MenuItem value="all">All Status</MenuItem>
             <MenuItem value="active">Active</MenuItem>
@@ -159,98 +160,103 @@ export default function ProductManagement() {
           </Select>
         </Box>
 
-        <Table>
-          <TableHead sx={{ bgcolor: "#F9FAFB" }}>
-            <TableRow>
-              {["Product", "Price", "Stock", "Status", "Actions"].map((h) => (
-                <TableCell key={h} sx={{ fontSize: 12, fontWeight: 700 }}>
-                  {h}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-            {!loading &&
-              filteredProducts.map((p) => {
-                const totalStock = p.variants?.reduce(
-                  (sum, v) => sum + v.stock,
-                  0
-                );
-
-                return (
-                  <TableRow key={p._id} hover>
-
-                    <TableCell>
-                      <Box display="flex" alignItems="center" gap={2}>
-                        <Box
-                          component="img"
-                          src={getImageUrl(p.image)}
-                          sx={{ width: 40, height: 40, borderRadius: 2 }}
-                        />
-                        <Box>
-                          <Typography fontWeight={600}>{p.name}</Typography>
-                          <Typography fontSize={12} color="text.secondary">
-                            SKU: {p.sku}
-                          </Typography>
-                        </Box>
-                      </Box>
-                    </TableCell>
-
-
-                    <TableCell fontWeight={600}>
-                      ₹{p.variants?.[0]?.price} / {p.variants?.[0]?.unit}
-                    </TableCell>
-
-
-                    <TableCell>
-                      <Chip
-                        label={
-                          totalStock > 0
-                            ? `In Stock (${totalStock})`
-                            : "Out of Stock"
-                        }
-                        color={totalStock > 0 ? "success" : "error"}
-                        size="small"
-                      />
-                    </TableCell>
-
-
-                    <TableCell>
-                      <Switch
-                        checked={p.isActive}
-                        color="success"
-                        onChange={() => handleToggleStatus(p._id, p.isActive)}
-                      />
-                    </TableCell>
-
-                    <TableCell>
-                      <IconButton
-                        onClick={() => handleEdit(p._id)}
-                        sx={{ color: "#16A34A" }}
-                      >
-                        <Edit />
-                      </IconButton>
-                      <IconButton
-                        color="error"
-                        onClick={() => handleDelete(p._id)}
-                      >
-                        <Delete />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-
-            {!loading && filteredProducts.length === 0 && (
+        <Box sx={{ overflowX: "auto" }}>
+          <Table sx={{ minWidth: 800 }}>
+            <TableHead sx={{ bgcolor: "#F9FAFB" }}>
               <TableRow>
-                <TableCell colSpan={5} align="center">
-                  No products found
-                </TableCell>
+                {["Product", "Price", "Stock", "Status", "Actions"].map((h) => (
+                  <TableCell key={h} sx={{ fontSize: 12, fontWeight: 700, whiteSpace: "nowrap" }}>
+                    {h}
+                  </TableCell>
+                ))}
               </TableRow>
-            )}
-          </TableBody>
-        </Table>
+            </TableHead>
+
+            <TableBody>
+              {!loading &&
+                filteredProducts.map((p) => {
+                  const totalStock = p.variants?.reduce(
+                    (sum, v) => sum + v.stock,
+                    0
+                  );
+
+                  return (
+                    <TableRow key={p._id} hover>
+
+                      <TableCell>
+                        <Box display="flex" alignItems="center" gap={2}>
+                          <Box
+                            component="img"
+                            src={getImageUrl(p.image)}
+                            sx={{ width: 40, height: 40, borderRadius: 2 }}
+                          />
+                          <Box>
+                            <Typography fontWeight={600} sx={{ whiteSpace: "nowrap" }}>{p.name}</Typography>
+                            <Typography fontSize={12} color="text.secondary">
+                              SKU: {p.sku}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </TableCell>
+
+
+                      <TableCell fontWeight={600} sx={{ whiteSpace: "nowrap" }}>
+                        ₹{p.variants?.[0]?.price} / {p.variants?.[0]?.unit}
+                      </TableCell>
+
+
+                      <TableCell>
+                        <Chip
+                          label={
+                            totalStock > 0
+                              ? `In Stock (${totalStock})`
+                              : "Out of Stock"
+                          }
+                          color={totalStock > 0 ? "success" : "error"}
+                          size="small"
+                          sx={{ whiteSpace: "nowrap" }}
+                        />
+                      </TableCell>
+
+
+                      <TableCell>
+                        <Switch
+                          checked={p.isActive}
+                          color="success"
+                          onChange={() => handleToggleStatus(p._id, p.isActive)}
+                        />
+                      </TableCell>
+
+                      <TableCell>
+                        <Box display="flex" gap={1}>
+                          <IconButton
+                            onClick={() => handleEdit(p._id)}
+                            sx={{ color: "#16A34A" }}
+                          >
+                            <Edit />
+                          </IconButton>
+                          <IconButton
+                            color="error"
+                            onClick={() => handleDelete(p._id)}
+                          >
+                            <Delete />
+                          </IconButton>
+                        </Box>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+
+              {!loading && filteredProducts.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={5} align="center">
+                    No products found
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </Box>
       </Paper>
     </Box>
   );

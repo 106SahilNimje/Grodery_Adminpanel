@@ -219,61 +219,63 @@ export default function Dashboard() {
           <Typography fontWeight={700}>Recent Orders</Typography>
         </Box>
 
-        <Table>
-          <TableHead sx={{ bgcolor: "#f9fafb" }}>
-            <TableRow>
-              {["Order ID", "Customer", "Date", "Amount", "Status", "Action"].map(
-                (h) => (
-                  <TableCell
-                    key={h}
-                    sx={{ fontSize: 12, fontWeight: 700, color: "#4b5563" }}
-                  >
-                    {h}
-                  </TableCell>
-                )
-              )}
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-            {recentOrders.map((o) => {
-              const { bg, text } = getStatusColor(o.orderStatus);
-              return (
-                <TableRow hover key={o._id}>
-                  <TableCell fontWeight={600}>#{o._id.slice(-6).toUpperCase()}</TableCell>
-                  <TableCell>{o.user?.name || o.customer?.name || "Guest"}</TableCell>
-                  <TableCell>{new Date(o.createdAt).toLocaleDateString()}</TableCell>
-                  <TableCell fontWeight={600}>₹{o.totalAmount}</TableCell>
-                  <TableCell>
-                    <Chip
-                      label={o.orderStatus}
-                      size="small"
-                      sx={{
-                        bgcolor: bg,
-                        color: text,
-                        fontWeight: 600
-                      }}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      size="small"
-                      sx={{ color: "#16a34a" }}
-                      onClick={() => navigate(`/orders?id=${o._id}`)}
-                    >
-                      View
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              )
-            })}
-            {recentOrders.length === 0 && (
+        <Box sx={{ overflowX: "auto" }}>
+          <Table sx={{ minWidth: 600 }}>
+            <TableHead sx={{ bgcolor: "#f9fafb" }}>
               <TableRow>
-                <TableCell colSpan={6} align="center">No recent orders</TableCell>
+                {["Order ID", "Customer", "Date", "Amount", "Status", "Action"].map(
+                  (h) => (
+                    <TableCell
+                      key={h}
+                      sx={{ fontSize: 12, fontWeight: 700, color: "#4b5563", whiteSpace: "nowrap" }}
+                    >
+                      {h}
+                    </TableCell>
+                  )
+                )}
               </TableRow>
-            )}
-          </TableBody>
-        </Table>
+            </TableHead>
+
+            <TableBody>
+              {recentOrders.map((o) => {
+                const { bg, text } = getStatusColor(o.orderStatus);
+                return (
+                  <TableRow hover key={o._id}>
+                    <TableCell fontWeight={600}>#{o._id.slice(-6).toUpperCase()}</TableCell>
+                    <TableCell>{o.user?.name || o.customer?.name || "Guest"}</TableCell>
+                    <TableCell sx={{ whiteSpace: "nowrap" }}>{new Date(o.createdAt).toLocaleDateString()}</TableCell>
+                    <TableCell fontWeight={600}>₹{o.totalAmount}</TableCell>
+                    <TableCell>
+                      <Chip
+                        label={o.orderStatus}
+                        size="small"
+                        sx={{
+                          bgcolor: bg,
+                          color: text,
+                          fontWeight: 600
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        size="small"
+                        sx={{ color: "#16a34a" }}
+                        onClick={() => navigate(`/orders?id=${o._id}`)}
+                      >
+                        View
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                )
+              })}
+              {recentOrders.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={6} align="center">No recent orders</TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </Box>
       </Card>
     </Box>
   );

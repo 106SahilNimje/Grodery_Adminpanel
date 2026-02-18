@@ -85,7 +85,7 @@ export default function CategoryManagement() {
     <>
       <Box p={3}>
 
-        <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
+        <Box display="flex" justifyContent="space-between" alignItems="center" mb={4} flexWrap="wrap" gap={2}>
           <Box>
             <Typography fontSize={24} fontWeight={700}>
               Category Management
@@ -110,11 +110,11 @@ export default function CategoryManagement() {
 
         <Paper sx={{ borderRadius: 3, overflow: "hidden" }}>
 
-          <Box p={3} display="flex" gap={2}>
+          <Box p={3} display="flex" gap={2} flexWrap="wrap">
             <TextField
               placeholder="Search categories..."
               size="small"
-              sx={{ width: 250 }}
+              sx={{ width: { xs: "100%", sm: 250 } }}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -123,7 +123,7 @@ export default function CategoryManagement() {
               size="small"
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              sx={{ width: 160 }}
+              sx={{ width: { xs: "100%", sm: 160 } }}
             >
               <MenuItem value="all">All Status</MenuItem>
               <MenuItem value="active">Active</MenuItem>
@@ -131,97 +131,102 @@ export default function CategoryManagement() {
             </Select>
           </Box>
 
-          <Table>
-            <TableHead sx={{ bgcolor: "#F9FAFB" }}>
-              <TableRow>
-                {[
-                  "Category Name",
-                  "Icon",
-                  "Sub-Categories",
-                  "Products",
-                  "Status",
-                  "Actions"
-                ].map((h) => (
-                  <TableCell
-                    key={h}
-                    sx={{
-                      fontSize: 12,
-                      fontWeight: 700,
-                      color: "#6B7280",
-                      textTransform: "uppercase"
-                    }}
-                  >
-                    {h}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-
-            <TableBody>
-              {filteredCategories.map((c) => (
-                <TableRow key={c._id}>
-
-                  <TableCell>{c.name}</TableCell>
-
-
-                  <TableCell>
-                    <Box
-                      sx={{
-                        width: 36,
-                        height: 36,
-                        borderRadius: 2,
-                        bgcolor: c.iconBg || "#E5E7EB",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: 18,
-                        overflow: "hidden"
-                      }}
-                      title={c.iconName ? `${c.iconFamily}: ${c.iconName}` : c.icon}
-                    >
-                      {renderIcon(c)}
-                    </Box>
-                  </TableCell>
-
-                  <TableCell>{c.subCategories?.length || 0}</TableCell>
-
-                  <TableCell>{c.productsCount || 0}</TableCell>
-
-                  <TableCell>
-                    <Switch
-                      checked={c.isActive}
-                      color="success"
-                      onChange={() => handleToggleStatus(c._id, c.isActive)}
-                    />
-                  </TableCell>
-
-                  <TableCell>
-                    <IconButton
-                      onClick={() => navigate(`/categories/edit/${c._id}`)}
-                      sx={{ color: "#16A34A" }}
-                    >
-                      <Edit />
-                    </IconButton>
-
-                    <IconButton
-                      sx={{ color: "red" }}
-                      onClick={() => dispatch(deleteCategory(c._id))}
-                    >
-                      <Delete />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              ))}
-
-              {!loading && filteredCategories.length === 0 && (
+          <Box sx={{ overflowX: "auto" }}>
+            <Table sx={{ minWidth: 800 }}>
+              <TableHead sx={{ bgcolor: "#F9FAFB" }}>
                 <TableRow>
-                  <TableCell colSpan={6} align="center">
-                    No categories found
-                  </TableCell>
+                  {[
+                    "Category Name",
+                    "Icon",
+                    "Sub-Categories",
+                    "Products",
+                    "Status",
+                    "Actions"
+                  ].map((h) => (
+                    <TableCell
+                      key={h}
+                      sx={{
+                        fontSize: 12,
+                        fontWeight: 700,
+                        color: "#6B7280",
+                        textTransform: "uppercase",
+                        whiteSpace: "nowrap"
+                      }}
+                    >
+                      {h}
+                    </TableCell>
+                  ))}
                 </TableRow>
-              )}
-            </TableBody>
-          </Table>
+              </TableHead>
+
+              <TableBody>
+                {filteredCategories.map((c) => (
+                  <TableRow key={c._id}>
+
+                    <TableCell>{c.name}</TableCell>
+
+
+                    <TableCell>
+                      <Box
+                        sx={{
+                          width: 36,
+                          height: 36,
+                          borderRadius: 2,
+                          bgcolor: c.iconBg || "#E5E7EB",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontSize: 18,
+                          overflow: "hidden"
+                        }}
+                        title={c.iconName ? `${c.iconFamily}: ${c.iconName}` : c.icon}
+                      >
+                        {renderIcon(c)}
+                      </Box>
+                    </TableCell>
+
+                    <TableCell>{c.subCategories?.length || 0}</TableCell>
+
+                    <TableCell>{c.productsCount || 0}</TableCell>
+
+                    <TableCell>
+                      <Switch
+                        checked={c.isActive}
+                        color="success"
+                        onChange={() => handleToggleStatus(c._id, c.isActive)}
+                      />
+                    </TableCell>
+
+                    <TableCell>
+                      <Box display="flex" gap={1}>
+                        <IconButton
+                          onClick={() => navigate(`/categories/edit/${c._id}`)}
+                          sx={{ color: "#16A34A" }}
+                        >
+                          <Edit />
+                        </IconButton>
+
+                        <IconButton
+                          sx={{ color: "red" }}
+                          onClick={() => dispatch(deleteCategory(c._id))}
+                        >
+                          <Delete />
+                        </IconButton>
+                      </Box>
+                    </TableCell>
+                  </TableRow>
+                ))}
+
+                {!loading && filteredCategories.length === 0 && (
+                  <TableRow>
+                    <TableCell colSpan={6} align="center">
+                      No categories found
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </Box>
 
 
 

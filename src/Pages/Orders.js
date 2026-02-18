@@ -152,10 +152,10 @@ export default function OrdersManagement() {
             placeholder="Search orders..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            sx={{ minWidth: 200 }}
+            sx={{ minWidth: 200, width: { xs: "100%", md: "auto" } }}
           />
 
-          <FormControl size="small" sx={{ minWidth: 150 }}>
+          <FormControl size="small" sx={{ minWidth: 150, width: { xs: "100%", sm: "auto" } }}>
             <InputLabel>Status</InputLabel>
             <Select
               value={statusFilter}
@@ -177,108 +177,115 @@ export default function OrdersManagement() {
             type="date"
             value={dateFilter}
             onChange={(e) => setDateFilter(e.target.value)}
+            sx={{ width: { xs: "100%", sm: "auto" } }}
           />
         </Box>
 
-        <Table>
-          <TableHead sx={{ bgcolor: "#F9FAFB" }}>
-            <TableRow>
-              {[
-                "Order ID",
-                "Customer",
-                "Date & Time",
-                "Items",
-                "Amount",
-                "Status",
-                "Actions"
-              ].map(h => (
-                <TableCell
-                  key={h}
-                  sx={{ fontSize: 12, fontWeight: 700 }}
-                >
-                  {h}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-            {loading ? (
+        <Box sx={{ overflowX: "auto" }}>
+          <Table sx={{ minWidth: 900 }}>
+            <TableHead sx={{ bgcolor: "#F9FAFB" }}>
               <TableRow>
-                <TableCell colSpan={7} align="center">Loading...</TableCell>
+                {[
+                  "Order ID",
+                  "Customer",
+                  "Date & Time",
+                  "Items",
+                  "Amount",
+                  "Status",
+                  "Actions"
+                ].map(h => (
+                  <TableCell
+                    key={h}
+                    sx={{ fontSize: 12, fontWeight: 700, whiteSpace: "nowrap" }}
+                  >
+                    {h}
+                  </TableCell>
+                ))}
               </TableRow>
-            ) : filteredOrders.length > 0 ? (
-              filteredOrders.map((o) => {
-                const { bg, text } = getStatusColor(o.orderStatus);
-                return (
-                  <TableRow key={o._id} hover>
-                    <TableCell sx={{ fontWeight: 600 }}>
-                      #{o._id.slice(-6).toUpperCase()}
-                    </TableCell>
+            </TableHead>
 
-                    <TableCell>
-                      <Typography fontWeight={600}>{o.user?.name || o.customer?.name || "Guest"}</Typography>
-                      <Typography fontSize={12} color="text.secondary">
-                        {o.user?.email || o.customer?.phone || "N/A"}
-                      </Typography>
-                    </TableCell>
+            <TableBody>
+              {loading ? (
+                <TableRow>
+                  <TableCell colSpan={7} align="center">Loading...</TableCell>
+                </TableRow>
+              ) : filteredOrders.length > 0 ? (
+                filteredOrders.map((o) => {
+                  const { bg, text } = getStatusColor(o.orderStatus);
+                  return (
+                    <TableRow key={o._id} hover>
+                      <TableCell sx={{ fontWeight: 600 }}>
+                        #{o._id.slice(-6).toUpperCase()}
+                      </TableCell>
 
-                    <TableCell>{new Date(o.createdAt).toLocaleString()}</TableCell>
-                    <TableCell>{o.items.length} items</TableCell>
+                      <TableCell>
+                        <Box minWidth={150}>
+                          <Typography fontWeight={600}>{o.user?.name || o.customer?.name || "Guest"}</Typography>
+                          <Typography fontSize={12} color="text.secondary">
+                            {o.user?.email || o.customer?.phone || "N/A"}
+                          </Typography>
+                        </Box>
+                      </TableCell>
 
-                    <TableCell sx={{ fontWeight: 600 }}>
-                      ₹{o.totalAmount}
-                    </TableCell>
+                      <TableCell sx={{ whiteSpace: "nowrap" }}>{new Date(o.createdAt).toLocaleString()}</TableCell>
+                      <TableCell sx={{ whiteSpace: "nowrap" }}>{o.items.length} items</TableCell>
 
-                    <TableCell>
-                      <Select
-                        size="small"
-                        value={o.orderStatus}
-                        onChange={(e) => handleStatusChange(o._id, e.target.value)}
-                        sx={{
-                          bgcolor: bg,
-                          color: text,
-                          fontSize: 12,
-                          fontWeight: 700,
-                          borderRadius: "999px",
-                          ".MuiOutlinedInput-notchedOutline": {
-                            border: "none"
-                          },
-                          height: 32
-                        }}
-                      >
-                        <MenuItem value="Pending">Pending</MenuItem>
-                        <MenuItem value="Confirmed">Confirmed</MenuItem>
-                        <MenuItem value="Processing">Processing</MenuItem>
-                        <MenuItem value="Shipped">Shipped</MenuItem>
-                        <MenuItem value="Delivered">Delivered</MenuItem>
-                        <MenuItem value="Cancelled">Cancelled</MenuItem>
-                      </Select>
-                    </TableCell>
+                      <TableCell sx={{ fontWeight: 600 }}>
+                        ₹{o.totalAmount}
+                      </TableCell>
 
-                    <TableCell>
-                      <Button
-                        size="small"
-                        sx={{
-                          color: "#16A34A",
-                          fontWeight: 600,
-                          textTransform: "none"
-                        }}
-                        onClick={() => handleViewDetails(o)}
-                      >
-                        View Details
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                )
-              })
-            ) : (
-              <TableRow>
-                <TableCell colSpan={7} align="center">No orders found</TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+                      <TableCell>
+                        <Select
+                          size="small"
+                          value={o.orderStatus}
+                          onChange={(e) => handleStatusChange(o._id, e.target.value)}
+                          sx={{
+                            bgcolor: bg,
+                            color: text,
+                            fontSize: 12,
+                            fontWeight: 700,
+                            borderRadius: "999px",
+                            ".MuiOutlinedInput-notchedOutline": {
+                              border: "none"
+                            },
+                            height: 32,
+                            minWidth: 120
+                          }}
+                        >
+                          <MenuItem value="Pending">Pending</MenuItem>
+                          <MenuItem value="Confirmed">Confirmed</MenuItem>
+                          <MenuItem value="Processing">Processing</MenuItem>
+                          <MenuItem value="Shipped">Shipped</MenuItem>
+                          <MenuItem value="Delivered">Delivered</MenuItem>
+                          <MenuItem value="Cancelled">Cancelled</MenuItem>
+                        </Select>
+                      </TableCell>
+
+                      <TableCell>
+                        <Button
+                          size="small"
+                          sx={{
+                            color: "#16A34A",
+                            fontWeight: 600,
+                            textTransform: "none",
+                            whiteSpace: "nowrap"
+                          }}
+                          onClick={() => handleViewDetails(o)}
+                        >
+                          View Details
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={7} align="center">No orders found</TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </Box>
 
         <Box
           p={2}

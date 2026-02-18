@@ -246,11 +246,11 @@ export default function InventoryManagement() {
       </Grid>
 
       <Paper sx={{ borderRadius: 3, overflow: "hidden" }}>
-        <Box p={3} display="flex" gap={2}>
+        <Box p={3} display="flex" gap={2} flexWrap="wrap">
           <TextField
             placeholder="Search inventory..."
             size="small"
-            sx={{ width: 300 }}
+            sx={{ width: { xs: "100%", sm: 300 } }}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -258,7 +258,7 @@ export default function InventoryManagement() {
             size="small"
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
-            sx={{ width: 160 }}
+            sx={{ width: { xs: "100%", sm: 160 } }}
           >
             <MenuItem value="all">All Categories</MenuItem>
             {categories.map(c => (
@@ -267,100 +267,104 @@ export default function InventoryManagement() {
           </Select>
         </Box>
 
-        <Table>
-          <TableHead sx={{ bgcolor: "#F9FAFB" }}>
-            <TableRow>
-              {[
-                "Product",
-                "SKU",
-                "Category",
-                "Variant",
-                "Current Stock",
-                "Status",
-                "Action"
-              ].map((h) => (
-                <TableCell
-                  key={h}
-                  sx={{
-                    fontSize: 12,
-                    fontWeight: 700,
-                    color: "#6B7280",
-                    textTransform: "uppercase"
-                  }}
-                >
-                  {h}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-            {filteredItems.map((item, index) => (
-              <TableRow key={index} hover>
-                <TableCell>
-                  <Box display="flex" alignItems="center" gap={2}>
-                    <Box
-                      component="img"
-                      src={item.img}
-                      sx={{ width: 40, height: 40, borderRadius: 2 }}
-                    />
-                    <Box>
-                      <Typography fontWeight={600} fontSize={14}>
-                        {item.name}
-                      </Typography>
-                      <Typography fontSize={13} color="text.secondary">
-                        {item.variant} • {item.category} {item.subCategory && `> ${item.subCategory}`}
-                      </Typography>
-                    </Box>
-                  </Box>
-                </TableCell>
-                <TableCell>{item.sku}</TableCell>
-                <TableCell>{item.category}</TableCell>
-                <TableCell>
-                  <Chip label={item.variant} size="small" />
-                </TableCell>
-                <TableCell fontWeight={700}>{item.stock}</TableCell>
-                <TableCell>
-                  {item.stock === 0 ? (
-                    <Chip
-                      label="Out of Stock"
-                      color="error"
-                      size="small"
-                      variant="outlined"
-                    />
-                  ) : item.stock <= 10 ? (
-                    <Chip
-                      label="Low Stock"
-                      color="warning"
-                      size="small"
-                      variant="outlined"
-                    />
-                  ) : (
-                    <Chip
-                      label="In Stock"
-                      color="success"
-                      size="small"
-                      variant="outlined"
-                    />
-                  )}
-                </TableCell>
-                <TableCell>
-                  <Button
-                    size="small"
-                    variant="contained"
-                    onClick={() => handleUpdateClick(item)}
+        <Box sx={{ overflowX: "auto" }}>
+          <Table sx={{ minWidth: 800 }}>
+            <TableHead sx={{ bgcolor: "#F9FAFB" }}>
+              <TableRow>
+                {[
+                  "Product",
+                  "SKU",
+                  "Category",
+                  "Variant",
+                  "Current Stock",
+                  "Status",
+                  "Action"
+                ].map((h) => (
+                  <TableCell
+                    key={h}
                     sx={{
-                      bgcolor: "#16A34A",
-                      "&:hover": { bgcolor: "#15803D" }
+                      fontSize: 12,
+                      fontWeight: 700,
+                      color: "#6B7280",
+                      textTransform: "uppercase",
+                      whiteSpace: "nowrap"
                     }}
                   >
-                    Update Stock
-                  </Button>
-                </TableCell>
+                    {h}
+                  </TableCell>
+                ))}
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHead>
+
+            <TableBody>
+              {filteredItems.map((item, index) => (
+                <TableRow key={index} hover>
+                  <TableCell>
+                    <Box display="flex" alignItems="center" gap={2} minWidth={250}>
+                      <Box
+                        component="img"
+                        src={item.img}
+                        sx={{ width: 40, height: 40, borderRadius: 2 }}
+                      />
+                      <Box>
+                        <Typography fontWeight={600} fontSize={14}>
+                          {item.name}
+                        </Typography>
+                        <Typography fontSize={13} color="text.secondary">
+                          {item.variant} • {item.category} {item.subCategory && `> ${item.subCategory}`}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </TableCell>
+                  <TableCell>{item.sku}</TableCell>
+                  <TableCell>{item.category}</TableCell>
+                  <TableCell>
+                    <Chip label={item.variant} size="small" />
+                  </TableCell>
+                  <TableCell fontWeight={700}>{item.stock}</TableCell>
+                  <TableCell>
+                    {item.stock === 0 ? (
+                      <Chip
+                        label="Out of Stock"
+                        color="error"
+                        size="small"
+                        variant="outlined"
+                      />
+                    ) : item.stock <= 10 ? (
+                      <Chip
+                        label="Low Stock"
+                        color="warning"
+                        size="small"
+                        variant="outlined"
+                      />
+                    ) : (
+                      <Chip
+                        label="In Stock"
+                        color="success"
+                        size="small"
+                        variant="outlined"
+                      />
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      size="small"
+                      variant="contained"
+                      onClick={() => handleUpdateClick(item)}
+                      sx={{
+                        bgcolor: "#16A34A",
+                        "&:hover": { bgcolor: "#15803D" },
+                        whiteSpace: "nowrap"
+                      }}
+                    >
+                      Update Stock
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Box>
       </Paper>
 
 

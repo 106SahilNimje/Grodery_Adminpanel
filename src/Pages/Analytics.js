@@ -54,7 +54,7 @@ export default function ReportsAnalytics() {
     dispatch(fetchAnalyticsData());
   }, [dispatch]);
 
-  
+
   const topSellingChart = useMemo(() => {
     return {
       labels: topSelling.map((p) => p.name),
@@ -84,7 +84,7 @@ export default function ReportsAnalytics() {
 
   const salesTrendChart = useMemo(() => {
     return {
-      labels: dailySales.map((d) => d._id), 
+      labels: dailySales.map((d) => d._id),
       datasets: [
         {
           label: "Revenue",
@@ -99,13 +99,13 @@ export default function ReportsAnalytics() {
   }, [dailySales]);
 
   const summaryStats = useMemo(() => {
-   
-    const today = new Date().toLocaleDateString('en-CA'); 
+
+    const today = new Date().toLocaleDateString('en-CA');
     const yesterday = new Date(Date.now() - 86400000).toLocaleDateString('en-CA');
 
     const todayData = dailySales.find((d) => d._id === today) || { totalRevenue: 0, orderCount: 0 };
     const yesterdayData = dailySales.find((d) => d._id === yesterday) || { totalRevenue: 0, orderCount: 0 };
-    
+
     const totalWeekRevenue = dailySales.reduce((acc, curr) => acc + curr.totalRevenue, 0);
     const totalWeekOrders = dailySales.reduce((acc, curr) => acc + curr.orderCount, 0);
 
@@ -118,15 +118,15 @@ export default function ReportsAnalytics() {
 
   const handleExport = () => {
     const csvRows = [];
-    
+
     csvRows.push(["Report Type", "Metric", "Value"]);
-    
+
     topSelling.forEach(p => csvRows.push(["Top Selling", p.name, p.totalSold]));
-    
+
     categoryPerformance.forEach(c => csvRows.push(["Category Sales", c._id, c.totalSales]));
-    
+
     dailySales.forEach(d => csvRows.push(["Daily Sales", d._id, d.totalRevenue]));
-    
+
     stockReport.lowStock.forEach(s => csvRows.push(["Low Stock", `${s.name} (${s.variant})`, s.stock]));
     stockReport.outOfStock.forEach(s => csvRows.push(["Out of Stock", `${s.name} (${s.variant})`, 0]));
 
@@ -190,20 +190,20 @@ export default function ReportsAnalytics() {
             Top Selling Products
           </Typography>
           <Box height={300}>
-             {topSelling.length > 0 ? (
-               <Bar
-                 data={topSellingChart}
-                 options={{ 
-                   responsive: true, 
-                   maintainAspectRatio: false,
-                   plugins: { legend: { display: false } } 
-                 }}
-               />
-             ) : (
-               <Box display="flex" alignItems="center" justifyContent="center" height="100%">
-                 <Typography color="text.secondary">No sales data available</Typography>
-               </Box>
-             )}
+            {topSelling.length > 0 ? (
+              <Bar
+                data={topSellingChart}
+                options={{
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: { legend: { display: false } }
+                }}
+              />
+            ) : (
+              <Box display="flex" alignItems="center" justifyContent="center" height="100%">
+                <Typography color="text.secondary">No sales data available</Typography>
+              </Box>
+            )}
           </Box>
         </Paper>
 
@@ -211,26 +211,26 @@ export default function ReportsAnalytics() {
           <Typography fontWeight={700} mb={2}>
             Sales by Category
           </Typography>
-          <Box height={300} width={400}display="flex" justifyContent="center">
+          <Box height={300} width={400} display="flex" justifyContent="center">
             {categoryPerformance.length > 0 ? (
               <Doughnut
                 data={categoryChart}
-                options={{ 
-                  responsive: true, 
+                options={{
+                  responsive: true,
                   maintainAspectRatio: false,
-                  plugins: { legend: { position: 'right' } } 
+                  plugins: { legend: { position: 'right' } }
                 }}
               />
             ) : (
               <Box display="flex" alignItems="center" justifyContent="center" height="100%">
-                 <Typography color="text.secondary">No category data available</Typography>
-               </Box>
+                <Typography color="text.secondary">No category data available</Typography>
+              </Box>
             )}
           </Box>
         </Paper>
       </Box>
 
-    
+
       <Box display="grid" gridTemplateColumns={{ lg: "1fr 1fr" }} gap={3} mb={3}>
         <Paper sx={card}>
           <Typography fontWeight={700} mb={2}>
@@ -240,8 +240,8 @@ export default function ReportsAnalytics() {
             {dailySales.length > 0 ? (
               <Line
                 data={salesTrendChart}
-                options={{ 
-                  responsive: true, 
+                options={{
+                  responsive: true,
                   maintainAspectRatio: false,
                   plugins: { legend: { display: false } },
                   scales: { y: { beginAtZero: true } }
@@ -249,8 +249,8 @@ export default function ReportsAnalytics() {
               />
             ) : (
               <Box display="flex" alignItems="center" justifyContent="center" height="100%">
-                 <Typography color="text.secondary">No trend data available</Typography>
-               </Box>
+                <Typography color="text.secondary">No trend data available</Typography>
+              </Box>
             )}
           </Box>
         </Paper>
@@ -327,33 +327,35 @@ export default function ReportsAnalytics() {
           Sales Summary (Snapshot)
         </Typography>
 
-        <Table>
-          <TableHead sx={{ bgcolor: "#F9FAFB" }}>
-            <TableRow>
-              {["Period", "Orders", "Revenue", "Avg Order Value", "Status"].map(
-                h => (
-                  <TableCell key={h} sx={{ fontSize: 12, fontWeight: 700 }}>
-                    {h}
-                  </TableCell>
-                )
-              )}
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-            {summaryStats.map((r, i) => (
-              <TableRow key={i} hover>
-                <TableCell fontWeight={600}>{r[0]}</TableCell>
-                <TableCell>{r[1]}</TableCell>
-                <TableCell fontWeight={600}>{r[2]}</TableCell>
-                <TableCell>{r[3]}</TableCell>
-                <TableCell sx={{ color: "#16A34A", fontWeight: 600 }}>
-                  Active
-                </TableCell>
+        <Box sx={{ overflowX: "auto" }}>
+          <Table sx={{ minWidth: 600 }}>
+            <TableHead sx={{ bgcolor: "#F9FAFB" }}>
+              <TableRow>
+                {["Period", "Orders", "Revenue", "Avg Order Value", "Status"].map(
+                  h => (
+                    <TableCell key={h} sx={{ fontSize: 12, fontWeight: 700, whiteSpace: "nowrap" }}>
+                      {h}
+                    </TableCell>
+                  )
+                )}
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHead>
+
+            <TableBody>
+              {summaryStats.map((r, i) => (
+                <TableRow key={i} hover>
+                  <TableCell fontWeight={600} sx={{ whiteSpace: "nowrap" }}>{r[0]}</TableCell>
+                  <TableCell>{r[1]}</TableCell>
+                  <TableCell fontWeight={600}>{r[2]}</TableCell>
+                  <TableCell>{r[3]}</TableCell>
+                  <TableCell sx={{ color: "#16A34A", fontWeight: 600 }}>
+                    Active
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Box>
       </Paper>
     </Box>
   );
