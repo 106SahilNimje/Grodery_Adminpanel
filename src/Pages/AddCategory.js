@@ -151,7 +151,7 @@ export default function CategoryForm() {
           )}
         </Box>
 
-        <Box display="flex" gap={2} mb={3}>
+        <Box display="flex" gap={2} mb={3} flexWrap="wrap">
           <TextField
             type="color"
             label="Icon Background"

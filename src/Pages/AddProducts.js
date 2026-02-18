@@ -136,7 +136,7 @@ export default function AddProduct() {
       </Box>
 
       <Paper sx={{ p: 4, borderRadius: 3 }}>
-        <Box display="grid" gridTemplateColumns={{ md: "1fr 1fr" }} gap={3}>
+        <Box display="grid" gridTemplateColumns={{ xs: "1fr", md: "1fr 1fr" }} gap={3}>
           <TextField
             label="Product Name *"
             value={name}
@@ -215,7 +215,7 @@ export default function AddProduct() {
 
         <Box mt={4}>
           <Typography fontWeight={600} mb={2}>Product Variants *</Typography>
-          <Box display="grid" gridTemplateColumns={{ md: "1fr 1fr 1fr auto" }} gap={2} alignItems="center">
+          <Box display="grid" gridTemplateColumns={{ xs: "1fr", md: "1fr 1fr 1fr auto" }} gap={2} alignItems="center">
             <TextField
               label="Unit (e.g. 1kg)"
               value={vUnit}

@@ -6,7 +6,8 @@ import {
   ListItemIcon,
   ListItemText,
   Avatar,
-  IconButton
+  IconButton,
+  Drawer
 } from "@mui/material";
 
 import {
@@ -24,6 +25,9 @@ import { logout } from "../Store/AuthSlice";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+
+const SIDEBAR_WIDTH = 256;
+
 const menuItems = [
   { label: "Dashboard", path: "/", icon: <Home /> },
   { label: "Categories", path: "/categories", icon: <Category /> },
@@ -34,29 +38,18 @@ const menuItems = [
   { label: "Settings", path: "/settings", icon: <Settings /> }
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ mobileOpen, handleDrawerToggle }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { admin } = useSelector((state) => state.auth);
 
   const handleLogout = () => {
-    dispatch(logout()); 
-    navigate("/login", { replace: true }); 
+    dispatch(logout());
+    navigate("/login", { replace: true });
   };
-  return (
-    <Box
-      sx={{
-        width: 256,
-        height: "100vh",
-        bgcolor: "#fff",
-        borderRight: "1px solid #e5e7eb",
-        display: "flex",
-        flexDirection: "column",
-        position: "fixed",
-        left: 0,
-        top: 0
-      }}
-    >
+
+  const drawer = (
+    <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
       <Box
         sx={{
           p: 3,
@@ -97,6 +90,12 @@ export default function Sidebar() {
               key={item.label}
               component={NavLink}
               to={item.path}
+              onClick={() => {
+                // Close sidebar on mobile when an item is clicked
+                if (mobileOpen && handleDrawerToggle) {
+                  handleDrawerToggle();
+                }
+              }}
               sx={{
                 px: 2,
                 py: 1.5,
@@ -183,6 +182,41 @@ export default function Sidebar() {
           </IconButton>
         </Box>
       </Box>
+    </Box>
+  );
+
+  return (
+    <Box
+      component="nav"
+      sx={{ width: { lg: SIDEBAR_WIDTH }, flexShrink: { lg: 0 } }}
+    >
+      {/* Mobile drawer */}
+      <Drawer
+        variant="temporary"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{
+          keepMounted: true, // Better open performance on mobile.
+        }}
+        sx={{
+          display: { xs: "block", lg: "none" },
+          "& .MuiDrawer-paper": { boxSizing: "border-box", width: SIDEBAR_WIDTH },
+        }}
+      >
+        {drawer}
+      </Drawer>
+
+      {/* Desktop drawer */}
+      <Drawer
+        variant="permanent"
+        sx={{
+          display: { xs: "none", lg: "block" },
+          "& .MuiDrawer-paper": { boxSizing: "border-box", width: SIDEBAR_WIDTH },
+        }}
+        open
+      >
+        {drawer}
+      </Drawer>
     </Box>
   );
 }
