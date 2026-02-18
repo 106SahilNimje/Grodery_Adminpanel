@@ -159,29 +159,30 @@ export default function Dashboard() {
                 Last 7 Days
               </Button>
             </Box>
-            <Box sx={{ height: 260, width: 380 }}>
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={salesData}>
-                  <defs>
-                    <linearGradient id="salesGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#22c55e" stopOpacity={0.35} />
-                      <stop offset="100%" stopColor="#22c55e" stopOpacity={0.05} />
-                    </linearGradient>
-                  </defs>
+            <Box sx={{ overflowX: "auto" }}>
+              <Box sx={{ height: 260, minWidth: 500 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={salesData}>
+                    <defs>
+                      <linearGradient id="salesGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#22c55e" stopOpacity={0.35} />
+                        <stop offset="100%" stopColor="#22c55e" stopOpacity={0.05} />
+                      </linearGradient>
+                    </defs>
 
-                  <XAxis dataKey="name" />
-                  <Tooltip />
+                    <XAxis dataKey="name" />
+                    <Tooltip />
 
-                  <Area
-                    type="monotone"
-                    dataKey="value"
-                    stroke="#22c55e"
-                    strokeWidth={3}
-                    fill="url(#salesGradient)"
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-
+                    <Area
+                      type="monotone"
+                      dataKey="value"
+                      stroke="#22c55e"
+                      strokeWidth={3}
+                      fill="url(#salesGradient)"
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </Box>
             </Box>
           </Card>
         </Grid>
@@ -191,24 +192,26 @@ export default function Dashboard() {
             <Typography fontWeight={700} mb={2}>
               Category Distribution
             </Typography>
-            <Box sx={{ height: 260, width: "100%" }}>
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={categoryData}
-                    dataKey="value"
-                    outerRadius={120}
-                    innerRadius={70}
-                    paddingAngle={2}
-                  >
+            <Box sx={{ overflowX: "auto" }}>
+              <Box sx={{ height: 260, minWidth: 500 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={categoryData}
+                      dataKey="value"
+                      outerRadius={120}
+                      innerRadius={70}
+                      paddingAngle={2}
+                    >
 
-                    {categoryData.map((_, i) => (
-                      <Cell key={i} fill={COLORS[i]} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
+                      {categoryData.map((_, i) => (
+                        <Cell key={i} fill={COLORS[i]} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </Box>
             </Box>
           </Card>
         </Grid>
