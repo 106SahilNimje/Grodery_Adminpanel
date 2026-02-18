@@ -188,6 +188,7 @@ export default function ProductManagement() {
                           <Box
                             component="img"
                             src={getImageUrl(p.image)}
+                            onError={(e) => { e.target.onerror = null; e.target.src = "https://via.placeholder.com/40?text=No+Img" }}
                             sx={{ width: 40, height: 40, borderRadius: 2 }}
                           />
                           <Box>

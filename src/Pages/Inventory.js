@@ -304,6 +304,7 @@ export default function InventoryManagement() {
                       <Box
                         component="img"
                         src={item.img}
+                        onError={(e) => { e.target.onerror = null; e.target.src = "https://via.placeholder.com/40?text=No+Img" }}
                         sx={{ width: 40, height: 40, borderRadius: 2 }}
                       />
                       <Box>
