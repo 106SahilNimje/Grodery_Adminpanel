@@ -47,7 +47,7 @@ export default function AddProduct() {
     if (!products || products.length === 0) {
       dispatch(fetchProducts());
     }
-  }, [dispatch, products]);
+  }, [dispatch, products, fetchCategories, fetchProducts]);
 
   const subCategories = categories.find((c) => c._id === categoryId)?.subCategories || [];
 
