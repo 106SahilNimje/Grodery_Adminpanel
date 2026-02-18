@@ -191,7 +191,7 @@ export default function Dashboard() {
             <Typography fontWeight={700} mb={2}>
               Category Distribution
             </Typography>
-            <Box sx={{ height: 260, width: 380 }}>
+            <Box sx={{ height: 260, width: "100%" }}>
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
