@@ -151,7 +151,7 @@ export default function ReportsAnalytics() {
 
   return (
     <Box p={3}>
-      <Box display="flex" justifyContent="space-between" mb={4}>
+      <Box display="flex" justifyContent="space-between" mb={4} flexWrap="wrap" gap={2}>
         <Box>
           <Typography fontSize={24} fontWeight={700}>
             Reports & Analytics
@@ -161,7 +161,7 @@ export default function ReportsAnalytics() {
           </Typography>
         </Box>
 
-        <Box display="flex" gap={2}>
+        <Box display="flex" gap={2} flexWrap="wrap">
           <Select size="small" value={timeRange} onChange={(e) => setTimeRange(e.target.value)}>
             <MenuItem value="7">Last 7 Days</MenuItem>
             <MenuItem value="30">Last 30 Days</MenuItem>
@@ -176,6 +176,7 @@ export default function ReportsAnalytics() {
               py: 1.5,
               borderRadius: 3,
               fontWeight: 600,
+              whiteSpace: "nowrap",
               "&:hover": { bgcolor: "#15803d" }
             }}
           >
@@ -189,21 +190,23 @@ export default function ReportsAnalytics() {
           <Typography fontWeight={700} mb={2}>
             Top Selling Products
           </Typography>
-          <Box height={300}>
-            {topSelling.length > 0 ? (
-              <Bar
-                data={topSellingChart}
-                options={{
-                  responsive: true,
-                  maintainAspectRatio: false,
-                  plugins: { legend: { display: false } }
-                }}
-              />
-            ) : (
-              <Box display="flex" alignItems="center" justifyContent="center" height="100%">
-                <Typography color="text.secondary">No sales data available</Typography>
-              </Box>
-            )}
+          <Box sx={{ overflowX: "auto", width: "100%", bgcolor: "background.paper" }}>
+            <Box height={300} minWidth={800}>
+              {topSelling.length > 0 ? (
+                <Bar
+                  data={topSellingChart}
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                  }}
+                />
+              ) : (
+                <Box display="flex" alignItems="center" justifyContent="center" height="100%">
+                  <Typography color="text.secondary">No sales data available</Typography>
+                </Box>
+              )}
+            </Box>
           </Box>
         </Paper>
 
@@ -211,21 +214,23 @@ export default function ReportsAnalytics() {
           <Typography fontWeight={700} mb={2}>
             Sales by Category
           </Typography>
-          <Box height={300} width={400} display="flex" justifyContent="center">
-            {categoryPerformance.length > 0 ? (
-              <Doughnut
-                data={categoryChart}
-                options={{
-                  responsive: true,
-                  maintainAspectRatio: false,
-                  plugins: { legend: { position: 'right' } }
-                }}
-              />
-            ) : (
-              <Box display="flex" alignItems="center" justifyContent="center" height="100%">
-                <Typography color="text.secondary">No category data available</Typography>
-              </Box>
-            )}
+          <Box sx={{ overflowX: "auto", width: "100%", bgcolor: "background.paper" }}>
+            <Box height={300} minWidth={600} display="flex" justifyContent="center">
+              {categoryPerformance.length > 0 ? (
+                <Doughnut
+                  data={categoryChart}
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'right' } }
+                  }}
+                />
+              ) : (
+                <Box display="flex" alignItems="center" justifyContent="center" height="100%">
+                  <Typography color="text.secondary">No category data available</Typography>
+                </Box>
+              )}
+            </Box>
           </Box>
         </Paper>
       </Box>
@@ -236,22 +241,24 @@ export default function ReportsAnalytics() {
           <Typography fontWeight={700} mb={2}>
             Daily Sales Trend
           </Typography>
-          <Box height={300}>
-            {dailySales.length > 0 ? (
-              <Line
-                data={salesTrendChart}
-                options={{
-                  responsive: true,
-                  maintainAspectRatio: false,
-                  plugins: { legend: { display: false } },
-                  scales: { y: { beginAtZero: true } }
-                }}
-              />
-            ) : (
-              <Box display="flex" alignItems="center" justifyContent="center" height="100%">
-                <Typography color="text.secondary">No trend data available</Typography>
-              </Box>
-            )}
+          <Box sx={{ overflowX: "auto", width: "100%", bgcolor: "background.paper" }}>
+            <Box height={300} minWidth={800}>
+              {dailySales.length > 0 ? (
+                <Line
+                  data={salesTrendChart}
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true } }
+                  }}
+                />
+              ) : (
+                <Box display="flex" alignItems="center" justifyContent="center" height="100%">
+                  <Typography color="text.secondary">No trend data available</Typography>
+                </Box>
+              )}
+            </Box>
           </Box>
         </Paper>
 
@@ -260,64 +267,66 @@ export default function ReportsAnalytics() {
             Low Stock & Out of Stock Alerts
           </Typography>
 
-          <Box sx={{ maxHeight: 300, overflowY: "auto" }}>
-            {stockReport.outOfStock.map((item, i) => (
-              <Box
-                key={`out-${i}`}
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                p={1.5}
-                mb={1}
-                borderRadius={2}
-                bgcolor="#FEE2E2"
-              >
-                <Box display="flex" gap={1.5} alignItems="center">
-                  <Avatar variant="rounded" sx={{ bgcolor: "#EF4444" }}>!</Avatar>
-                  <Box>
-                    <Typography fontWeight={600}>{item.name}</Typography>
-                    <Typography fontSize={12} color="text.secondary">
-                      {item.variant} • {item.category}
-                    </Typography>
+          <Box sx={{ maxHeight: 300, overflowY: "auto", overflowX: "auto" }}>
+            <Box minWidth={500}>
+              {stockReport.outOfStock.map((item, i) => (
+                <Box
+                  key={`out-${i}`}
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  p={1.5}
+                  mb={1}
+                  borderRadius={2}
+                  bgcolor="#FEE2E2"
+                >
+                  <Box display="flex" gap={1.5} alignItems="center">
+                    <Avatar variant="rounded" sx={{ bgcolor: "#EF4444" }}>!</Avatar>
+                    <Box>
+                      <Typography fontWeight={600}>{item.name}</Typography>
+                      <Typography fontSize={12} color="text.secondary">
+                        {item.variant} • {item.category}
+                      </Typography>
+                    </Box>
                   </Box>
+                  <Typography fontWeight={700} color="#DC2626">
+                    Out of Stock
+                  </Typography>
                 </Box>
-                <Typography fontWeight={700} color="#DC2626">
-                  Out of Stock
-                </Typography>
-              </Box>
-            ))}
+              ))}
 
-            {stockReport.lowStock.map((item, i) => (
-              <Box
-                key={`low-${i}`}
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                p={1.5}
-                mb={1}
-                borderRadius={2}
-                bgcolor="#FEF9C3"
-              >
-                <Box display="flex" gap={1.5} alignItems="center">
-                  <Avatar variant="rounded" sx={{ bgcolor: "#EAB308" }}>L</Avatar>
-                  <Box>
-                    <Typography fontWeight={600}>{item.name}</Typography>
-                    <Typography fontSize={12} color="text.secondary">
-                      {item.variant} • {item.category}
-                    </Typography>
+              {stockReport.lowStock.map((item, i) => (
+                <Box
+                  key={`low-${i}`}
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  p={1.5}
+                  mb={1}
+                  borderRadius={2}
+                  bgcolor="#FEF9C3"
+                >
+                  <Box display="flex" gap={1.5} alignItems="center">
+                    <Avatar variant="rounded" sx={{ bgcolor: "#EAB308" }}>L</Avatar>
+                    <Box>
+                      <Typography fontWeight={600}>{item.name}</Typography>
+                      <Typography fontSize={12} color="text.secondary">
+                        {item.variant} • {item.category}
+                      </Typography>
+                    </Box>
                   </Box>
+                  <Typography fontWeight={700} color="#CA8A04">
+                    {item.stock} left
+                  </Typography>
                 </Box>
-                <Typography fontWeight={700} color="#CA8A04">
-                  {item.stock} left
-                </Typography>
-              </Box>
-            ))}
+              ))}
 
-            {stockReport.outOfStock.length === 0 && stockReport.lowStock.length === 0 && (
-              <Typography color="text.secondary" align="center" mt={4}>
-                Inventory is healthy! No alerts.
-              </Typography>
-            )}
+              {stockReport.outOfStock.length === 0 && stockReport.lowStock.length === 0 && (
+                <Typography color="text.secondary" align="center" mt={4}>
+                  Inventory is healthy! No alerts.
+                </Typography>
+              )}
+            </Box>
           </Box>
         </Paper>
       </Box>
@@ -357,7 +366,7 @@ export default function ReportsAnalytics() {
           </Table>
         </Box>
       </Paper>
-    </Box>
+    </Box >
   );
 }
 
@@ -365,6 +374,6 @@ const card = {
   p: 3,
   borderRadius: 3,
   border: "1px solid #eee",
-  boxShadow: "0 1px 3px rgba(0,0,0,0.05)"
-
+  boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+  minWidth: 0
 };
