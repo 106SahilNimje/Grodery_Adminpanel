@@ -66,7 +66,7 @@ export default function ProductManagement() {
 
 
   const getImageUrl = (imagePath) => {
-    if (!imagePath) return "https://via.placeholder.com/40";
+    if (!imagePath) return "https://placehold.co/40x40?text=No+Img";
 
     // If it's a relative path (new backend logic)
     if (imagePath.startsWith("uploads/") || imagePath.startsWith("uploads\\")) {
@@ -188,7 +188,7 @@ export default function ProductManagement() {
                           <Box
                             component="img"
                             src={getImageUrl(p.image)}
-                            onError={(e) => { e.target.onerror = null; e.target.src = "https://via.placeholder.com/40?text=No+Img" }}
+                            onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/40x40?text=No+Img" }}
                             sx={{ width: 40, height: 40, borderRadius: 2 }}
                           />
                           <Box>

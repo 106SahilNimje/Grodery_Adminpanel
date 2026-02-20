@@ -106,7 +106,7 @@ export default function OrdersManagement() {
   };
 
   const getImageUrl = (imagePath) => {
-    if (!imagePath) return "https://via.placeholder.com/40";
+    if (!imagePath) return "https://placehold.co/40x40?text=No+Img";
 
     // If it's a relative path (new backend logic)
     if (imagePath.startsWith("uploads/") || imagePath.startsWith("uploads\\")) {
