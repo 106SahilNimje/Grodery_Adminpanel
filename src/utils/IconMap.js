@@ -4,6 +4,7 @@ import {
   WaterDrop,
   Fastfood,
   ShoppingBag,
+  ShoppingBasket,
   Category,
   Inventory2,
   LocalDining,
@@ -37,6 +38,7 @@ export const IconMap = {
   "bag-handle": ShoppingBag,
   "bag-handle-outline": ShoppingBag,
   grocery: ShoppingBag,
+  basket: ShoppingBasket,
 
   // General
   category: Category,
@@ -51,4 +53,4 @@ export const IconMap = {
   books: MenuBook
 };
 
-export const IconNames = ["leaf", "nutrition", "water"];
+export const IconNames = ["leaf", "nutrition", "water", "basket"];
