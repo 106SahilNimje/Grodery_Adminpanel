@@ -86,11 +86,27 @@ export default function Dashboard() {
   const recentOrders = orders.slice(0, 5);
 
   const salesData = useMemo(() => {
-    if (!dailySales || dailySales.length === 0) return [];
-    return dailySales.map(item => ({
-      name: new Date(item._id).toLocaleDateString('en-US', { weekday: 'short' }),
-      value: item.totalRevenue
-    }));
+    const data = [];
+    const today = new Date();
+    
+    const salesMap = {};
+    if (dailySales && Array.isArray(dailySales)) {
+      dailySales.forEach(item => {
+        salesMap[item._id] = item.totalRevenue;
+      });
+    }
+
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(today);
+      d.setDate(d.getDate() - i);
+      const dateStr = d.toISOString().split('T')[0];
+      
+      data.push({
+        name: d.toLocaleDateString('en-US', { weekday: 'short' }),
+        value: salesMap[dateStr] || 0
+      });
+    }
+    return data;
   }, [dailySales]);
 
   const categoryData = useMemo(() => {
